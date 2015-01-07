@@ -95,7 +95,8 @@ public enum ModeId {
     }
 
     public boolean supportsVariant(Variant variant) {
-        return variant == Variant.X32 || (this == HOST && variant == Variant.X64);
+        return (variant == Variant.X32)
+                || ((this == HOST || this == DEVICE) && (variant == Variant.X64));
     }
 
     /** The default command to use for the mode unless overridden by --vm-command */
