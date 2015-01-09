@@ -16,7 +16,6 @@
 
 package vogar.monitor;
 
-import com.google.caliper.util.InterleavedReader;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.io.BufferedInputStream;
