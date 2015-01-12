@@ -15,6 +15,10 @@
  * limitations under the License.
  */
 
+// This file is a copy of caliper's InterleavedReader.java
+// (from code.google.com, last change Sep 9 2011)
+// with Android specific changes marked with "BEGIN android-changed".
+
 package vogar.monitor;
 
 import com.google.gson.JsonParser;
@@ -63,11 +67,13 @@ public final class InterleavedReader implements Closeable {
    */
   public Object read() throws IOException {
     char[] buffer = new char[BUFFER_LENGTH];
+    // BEGIN android-changed:
     // Double the lookahead size. This is a safety measure in the presence of
     // new lines, where the line feed character is being skipped. The lookahead
     // check in the BufferedReader class does not take these skipped characters
     // into account.
     reader.mark(BUFFER_LENGTH << 1);
+    // END android-changed.
     int count = 0;
     int textEnd;
 
