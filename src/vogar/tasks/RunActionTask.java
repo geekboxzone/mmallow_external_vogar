@@ -84,7 +84,7 @@ public class RunActionTask extends Task implements HostMonitor.Handler {
                         ? run.largeTimeoutSeconds
                         : run.smallTimeoutSeconds;
                 if (timeoutSeconds != 0) {
-                    currentCommand.scheduleTimeout(run.timeoutSeconds);
+                    currentCommand.scheduleTimeout(timeoutSeconds);
                 }
 
                 HostMonitor hostMonitor = new HostMonitor(run.console, this);
