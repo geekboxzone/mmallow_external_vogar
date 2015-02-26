@@ -63,9 +63,6 @@ public final class TestRunner {
         qualifiedName = properties.getProperty(TestProperties.QUALIFIED_NAME);
         qualifiedClassOrPackageName = properties.getProperty(TestProperties.TEST_CLASS_OR_PACKAGE);
         timeoutSeconds = Integer.parseInt(properties.getProperty(TestProperties.TIMEOUT));
-        runners = Arrays.asList(new JUnitRunner(),
-                                new CaliperRunner(),
-                                new MainRunner());
 
         int monitorPort = Integer.parseInt(properties.getProperty(TestProperties.MONITOR_PORT));
         String skipPast = null;
@@ -77,6 +74,14 @@ public final class TestRunner {
         boolean profileThreadGroup
                 = Boolean.parseBoolean(properties.getProperty(TestProperties.PROFILE_THREAD_GROUP));
 
+        boolean testOnly = Boolean.parseBoolean(properties.getProperty(TestProperties.TEST_ONLY));
+        if (testOnly) {
+          runners = Arrays.asList((Runner)new JUnitRunner());
+        } else {
+          runners = Arrays.asList(new JUnitRunner(),
+                                  new CaliperRunner(),
+                                  new MainRunner());
+        }
         for (Iterator<String> i = argsList.iterator(); i.hasNext(); ) {
             String arg = i.next();
             if (arg.equals("--monitorPort")) {

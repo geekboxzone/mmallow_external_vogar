@@ -138,5 +138,6 @@ public final class BuildActionTask extends Task {
         properties.setProperty(TestProperties.PROFILE_FILE, run.profileFile.getName());
         properties.setProperty(TestProperties.PROFILE_THREAD_GROUP,
                 Boolean.toString(run.profileThreadGroup));
+        properties.setProperty(TestProperties.TEST_ONLY, Boolean.toString(run.testOnly));
     }
 }

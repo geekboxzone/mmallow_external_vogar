@@ -185,6 +185,9 @@ public final class Vogar {
     @Option(names = { "--profile-thread-group" })
     boolean profileThreadGroup = false;
 
+    @Option(names = { "--test-only" })
+    boolean testOnly = false;
+
     private Vogar() {}
 
     private void printUsage() {
@@ -280,6 +283,9 @@ public final class Vogar {
         System.out.println();
         System.out.println("  --results-dir <directory>: read and write (if --record-results used)");
         System.out.println("      results from and to this directory.");
+        System.out.println();
+        System.out.println("  --test-only: only run JUnit tests.");
+        System.out.println("      Default is: " + testOnly);
         System.out.println();
         System.out.println("  --verbose: turn on persistent verbose output.");
         System.out.println();

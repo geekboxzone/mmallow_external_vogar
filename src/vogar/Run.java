@@ -95,6 +95,7 @@ public final class Run {
     public final ClassFileIndex classFileIndex;
     public final OutcomeStore outcomeStore;
     public final TaskQueue taskQueue;
+    public final boolean testOnly;
 
     public Run(Vogar vogar) throws IOException {
         this.console = vogar.stream
@@ -159,6 +160,7 @@ public final class Run {
         this.keystore = localFile("activity", "vogar.keystore");
         this.classpath = Classpath.of(vogar.classpath);
         this.classpath.addAll(vogarJar());
+        this.testOnly = vogar.testOnly;
 
         if (vogar.modeId.requiresAndroidSdk()) {
             androidSdk = new AndroidSdk(log, mkdir, vogar.modeId);

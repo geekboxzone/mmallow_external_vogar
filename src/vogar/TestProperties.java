@@ -74,5 +74,10 @@ final public class TestProperties {
      */
     public static final String PROFILE_THREAD_GROUP = "profileThreadGroup";
 
+    /**
+     * Only run JUnit tests?
+     */
+    public static final String TEST_ONLY = "testOnly";
+
     private TestProperties() {}
 }
