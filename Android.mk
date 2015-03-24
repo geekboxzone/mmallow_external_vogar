@@ -28,6 +28,7 @@ LOCAL_MODULE_CLASS := JAVA_LIBRARIES
 intermediates := $(call local-intermediates-dir,COMMON)
 
 LOCAL_SRC_FILES := $(call all-java-files-under, src/)
+LOCAL_JAVA_RESOURCE_DIRS := resources
 
 LOCAL_STATIC_JAVA_LIBRARIES := \
   vogar-caliper \
