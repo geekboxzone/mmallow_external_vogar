@@ -50,9 +50,7 @@
             <zipfileset src="${gson}"/>
             <zipfileset src="${guava}"/>
             <zipfileset src="${kxml2}"/>
-            <fileset dir="src">
-                <exclude name="**/*.java"/>
-            </fileset>
+            <fileset dir="resources"/>
             <manifest>
                 <attribute name="Main-Class" value="vogar.Vogar"/>
             </manifest>
