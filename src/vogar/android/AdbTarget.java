@@ -58,7 +58,8 @@ public final class AdbTarget extends Target {
         // The default environment doesn't include $USER, so dalvikvm doesn't set "user.name".
         // DeviceDalvikVm uses this to set "user.name" manually with -D.
         String line = new Command(run.log, "adb", "shell", "id").execute().get(0);
-        Matcher m = Pattern.compile("uid=\\d+\\((\\S+)\\) gid=\\d+\\(\\S+\\)").matcher(line);
+        // TODO: use 'id -un' when we don't need to support anything older than M
+        Matcher m = Pattern.compile("^uid=\\d+\\((\\S+)\\) gid=\\d+\\(\\S+\\).*").matcher(line);
         return m.matches() ? m.group(1) : "root";
     }
 

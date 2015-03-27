@@ -75,7 +75,8 @@ public final class SshTarget extends Target {
         // DeviceDalvikVm uses this to set "user.name" manually with -D.
         String line = new Command(log, "ssh", "-p", Integer.toString(port), host, "-C", "id")
                 .execute().get(0);
-        Matcher m = Pattern.compile("uid=\\d+\\((\\S+)\\) gid=\\d+\\(\\S+\\)").matcher(line);
+        // TODO: use 'id -un' when we don't need to support anything older than M
+        Matcher m = Pattern.compile("^uid=\\d+\\((\\S+)\\) gid=\\d+\\(\\S+\\).*").matcher(line);
         return m.matches() ? m.group(1) : "root";
     }
 
