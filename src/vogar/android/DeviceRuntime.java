@@ -80,7 +80,10 @@ public final class DeviceRuntime implements Mode {
 
     @Override public VmCommandBuilder newVmCommandBuilder(Action action, File workingDirectory) {
         List<String> vmCommand = new ArrayList<String>();
-        vmCommand.addAll(run.target.targetProcessPrefix(workingDirectory));
+        vmCommand.addAll(run.target.targetProcessPrefix());
+        vmCommand.add("cd");
+        vmCommand.add(workingDirectory.getAbsolutePath());
+        vmCommand.add("&&");
         vmCommand.add(run.getAndroidData());
         Iterables.addAll(vmCommand, run.invokeWith());
         vmCommand.add(run.vmCommand);

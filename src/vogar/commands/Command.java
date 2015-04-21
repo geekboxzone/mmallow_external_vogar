@@ -88,10 +88,29 @@ public final class Command {
             throw new IllegalStateException("Already started!");
         }
 
-        log.verbose("executing " + this);
+        // Translate ["sh", "-c", "ls", "/tmp"] into ["sh", "-c", "ls /tmp"].
+        // This isn't particularly useful for local execution, where we would
+        // be better off just using the original array, but is important for
+        // remote execution where we can't just exec and need a consistent
+        // interpretation of our command.
+        ArrayList<String> actual = new ArrayList<String>();
+        int i = 0;
+        while (i < args.size()) {
+            String arg = args.get(i++);
+            actual.add(arg);
+            if (arg.equals("-c")) break;
+        }
+        if (i < args.size()) {
+            String cmd = "";
+            for (; i < args.size(); ++i) {
+                cmd += args.get(i) + " ";
+            }
+            actual.add(cmd);
+        }
+        log.verbose("executing " + actual);
 
         ProcessBuilder processBuilder = new ProcessBuilder()
-                .command(args)
+                .command(actual)
                 .redirectErrorStream(true);
         if (workingDirectory != null) {
             processBuilder.directory(workingDirectory);

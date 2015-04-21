@@ -89,17 +89,6 @@ public final class HostRuntime implements Mode {
         }
         Classpath bootClasspath = Classpath.of(jars);
 
-        VmCommandBuilder builder = new VmCommandBuilder(run.log)
-                .userDir(workingDirectory)
-                .env("ANDROID_PRINTF_LOG", "tag")
-                .env("ANDROID_LOG_TAGS", "*:i")
-                .env("ANDROID_DATA", dalvikCache().getParent());
-
-        List<String> vmCommand = new ArrayList<String>();
-        Iterables.addAll(vmCommand, run.invokeWith());
-
-        vmCommand.add(buildRoot + "/out/host/linux-x86/bin/" + run.vmCommand);
-
         String libDir = buildRoot + "/out/host/linux-x86";
         if (variant == Variant.X32) {
             libDir += "/lib";
@@ -108,9 +97,19 @@ public final class HostRuntime implements Mode {
         } else {
             throw new AssertionError("Unsupported variant:" + variant);
         }
-        builder.env("ANDROID_ROOT", buildRoot + "/out/host/linux-x86")
-                .env("LD_LIBRARY_PATH", libDir)
-                .env("DYLD_LIBRARY_PATH", libDir);
+
+        List<String> vmCommand = new ArrayList<String>();
+        vmCommand.addAll(run.target.targetProcessPrefix());
+        vmCommand.add("ANDROID_PRINTF_LOG=tag");
+        vmCommand.add("ANDROID_LOG_TAGS=*:i");
+        vmCommand.add("ANDROID_DATA=" + dalvikCache().getParent());
+        vmCommand.add("ANDROID_ROOT=" + buildRoot + "/out/host/linux-x86");
+        vmCommand.add("LD_LIBRARY_PATH=" + libDir);
+        vmCommand.add("DYLD_LIBRARY_PATH=" + libDir);
+        Iterables.addAll(vmCommand, run.invokeWith());
+        vmCommand.add(buildRoot + "/out/host/linux-x86/bin/" + run.vmCommand);
+
+        VmCommandBuilder builder = new VmCommandBuilder(run.log);
 
         // If you edit this, see also DeviceRuntime...
         builder.vmCommand(vmCommand)

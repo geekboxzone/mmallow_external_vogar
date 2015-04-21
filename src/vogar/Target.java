@@ -25,7 +25,7 @@ import vogar.tasks.Task;
  * A target runtime environment such as a remote device or the local host
  */
 public abstract class Target {
-    public abstract List<String> targetProcessPrefix(File workingDirectory);
+    public abstract List<String> targetProcessPrefix();
     public abstract File defaultDeviceDir();
     public abstract String getDeviceUserName();
 

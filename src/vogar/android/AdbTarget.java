@@ -37,8 +37,8 @@ public final class AdbTarget extends Target {
         return new File("/data/local/tmp/vogar");
     }
 
-    @Override public List<String> targetProcessPrefix(File workingDirectory) {
-        return ImmutableList.of("adb", "shell", "cd", workingDirectory.getAbsolutePath(), "&&");
+    @Override public List<String> targetProcessPrefix() {
+        return ImmutableList.of("adb", "shell", "sh", "-c");
     }
 
     // TODO: pull the methods from androidsdk into here

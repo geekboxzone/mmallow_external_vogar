@@ -52,11 +52,8 @@ public final class SshTarget extends Target {
         return new File("/data/local/tmp/vogar");
     }
 
-    @Override public List<String> targetProcessPrefix(File workingDirectory) {
-        // TODO: drop the LD_LIBRARY_PATH env value; it's needed for third-parth sshd servers
-        return Arrays.asList("ssh", "-p", Integer.toString(port), host, "-C",
-                "cd", workingDirectory.getAbsolutePath(), "&&",
-                "LD_LIBRARY_PATH=/vendor/lib:/system/lib");
+    @Override public List<String> targetProcessPrefix() {
+        return Arrays.asList("ssh", "-p", Integer.toString(port), host, "-C");
     }
 
     @Override public void await(File nonEmptyDirectory) {

@@ -16,6 +16,7 @@
 
 package vogar;
 
+import com.google.common.collect.ImmutableList;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
@@ -36,8 +37,8 @@ public final class LocalTarget extends Target {
         return new File("/tmp/vogar");
     }
 
-    @Override public List<String> targetProcessPrefix(File workingDirectory) {
-        return Collections.emptyList();
+    @Override public List<String> targetProcessPrefix() {
+        return ImmutableList.of("sh", "-c");
     }
 
     @Override public String getDeviceUserName() {
