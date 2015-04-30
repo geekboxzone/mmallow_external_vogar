@@ -42,6 +42,12 @@ LOCAL_STATIC_JAVA_LIBRARIES := \
 # Vogar uses android.jar.
 LOCAL_SDK_VERSION := 9
 
+# This is really a host java library which pretends to be a target
+# java library to pull in the Android SDK. We don't want to use jack
+# because jack doesn't produce jar files for STATIC_JAVA_LIBRARIES,
+# and produces its own intermediate representation instead.
+LOCAL_JACK_ENABLED := disabled
+
 include $(BUILD_STATIC_JAVA_LIBRARY)
 
 # Build dependencies.
