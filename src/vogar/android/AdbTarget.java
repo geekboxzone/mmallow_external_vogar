@@ -38,7 +38,7 @@ public final class AdbTarget extends Target {
     }
 
     @Override public List<String> targetProcessPrefix() {
-        return ImmutableList.of("adb", "shell", "sh", "-c");
+        return ImmutableList.of("adb", "shell");
     }
 
     // TODO: pull the methods from androidsdk into here
