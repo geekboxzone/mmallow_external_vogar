@@ -88,10 +88,27 @@ public final class Command {
             throw new IllegalStateException("Already started!");
         }
 
-        log.verbose("executing " + args);
+        // Translate ["sh", "-c", "ls", "/tmp"] into ["sh", "-c", "ls /tmp"].
+        // This is needed for host execution.
+        ArrayList<String> actual = new ArrayList<String>();
+        int i = 0;
+        while (i < args.size()) {
+            String arg = args.get(i++);
+            actual.add(arg);
+            if (arg.equals("-c")) break;
+        }
+        if (i < args.size()) {
+            String cmd = "";
+            for (; i < args.size(); ++i) {
+                cmd += args.get(i) + " ";
+            }
+            actual.add(cmd);
+        }
+
+        log.verbose("executing " + actual);
 
         ProcessBuilder processBuilder = new ProcessBuilder()
-                .command(args)
+                .command(actual)
                 .redirectErrorStream(true);
         if (workingDirectory != null) {
             processBuilder.directory(workingDirectory);
