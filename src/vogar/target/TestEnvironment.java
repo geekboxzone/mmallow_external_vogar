@@ -22,6 +22,7 @@ import java.lang.reflect.Modifier;
 import java.net.Authenticator;
 import java.net.CookieHandler;
 import java.net.ResponseCache;
+import java.text.DateFormat;
 import java.util.Locale;
 import java.util.HashMap;
 import java.util.TimeZone;
@@ -43,6 +44,20 @@ public final class TestEnvironment {
 
     private final HostnameVerifier defaultHostnameVerifier;
     private final SSLSocketFactory defaultSSLSocketFactory;
+
+    /** The DateFormat.is24Hour field. Not present on older versions of Android or the RI. */
+    private static final Field dateFormatIs24HourField;
+    static {
+        Field f;
+        try {
+            Class<?> dateFormatClass = Class.forName("java.text.DateFormat");
+            f = dateFormatClass.getDeclaredField("is24Hour");
+        } catch (ClassNotFoundException | NoSuchFieldException e) {
+            f = null;
+        }
+        dateFormatIs24HourField = f;
+    }
+    private final Boolean defaultDateFormatIs24Hour;
 
     private static final String JAVA_RUNTIME_VERSION = System.getProperty("java.runtime.version"); 
     private static final String JAVA_VM_INFO = System.getProperty("java.vm.info"); 
@@ -71,6 +86,7 @@ public final class TestEnvironment {
 
         defaultHostnameVerifier = HttpsURLConnection.getDefaultHostnameVerifier();
         defaultSSLSocketFactory = HttpsURLConnection.getDefaultSSLSocketFactory();
+        defaultDateFormatIs24Hour = hasDateFormatIs24Hour() ? getDateFormatIs24Hour() : null;
 
         disableSecurity();
     }
@@ -115,6 +131,9 @@ public final class TestEnvironment {
         // Localization
         Locale.setDefault(Locale.US);
         TimeZone.setDefault(TimeZone.getTimeZone("America/Los_Angeles"));
+        if (hasDateFormatIs24Hour()) {
+            setDateFormatIs24Hour(defaultDateFormatIs24Hour);
+        }
 
         // Preferences
         // Temporarily silence the java.util.prefs logger, which otherwise emits
@@ -194,6 +213,30 @@ public final class TestEnvironment {
             restrictedField.setAccessible(true);
             restrictedField.set(null, Boolean.FALSE);
         } catch (Exception ignored) {
+        }
+    }
+
+    private static boolean hasDateFormatIs24Hour() {
+        return dateFormatIs24HourField != null;
+    }
+
+    private static Boolean getDateFormatIs24Hour() {
+        try {
+            return (Boolean) dateFormatIs24HourField.get(null);
+        } catch (IllegalAccessException e) {
+            Error e2 = new AssertionError("Unable to get java.text.DateFormat.is24Hour");
+            e2.initCause(e);
+            throw e2;
+        }
+    }
+
+    private static void setDateFormatIs24Hour(Boolean value) {
+        try {
+            dateFormatIs24HourField.set(null, value);
+        } catch (IllegalAccessException e) {
+            Error e2 = new AssertionError("Unable to set java.text.DateFormat.is24Hour");
+            e2.initCause(e);
+            throw e2;
         }
     }
 }
