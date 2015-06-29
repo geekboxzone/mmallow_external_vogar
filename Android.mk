@@ -20,13 +20,9 @@ LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 
 LOCAL_MODULE := vogar.jar
-
 LOCAL_MODULE_TAGS := optional
-
 LOCAL_MODULE_CLASS := JAVA_LIBRARIES
-
 intermediates := $(call local-intermediates-dir,COMMON)
-
 LOCAL_SRC_FILES := $(call all-java-files-under, src/)
 LOCAL_JAVA_RESOURCE_DIRS := resources
 
@@ -47,7 +43,6 @@ LOCAL_SDK_VERSION := 9
 # because jack doesn't produce jar files for STATIC_JAVA_LIBRARIES,
 # and produces its own intermediate representation instead.
 LOCAL_JACK_ENABLED := disabled
-
 include $(BUILD_STATIC_JAVA_LIBRARY)
 
 # Build dependencies.
@@ -77,7 +72,7 @@ LOCAL_MODULE := vogar
 
 include $(BUILD_SYSTEM)/base_rules.mk
 
-$(LOCAL_BUILT_MODULE): $(LOCAL_PATH)/bin/vogar-android | $(ACP)
+$(LOCAL_BUILT_MODULE): $(LOCAL_PATH)/bin/vogar-android vogar.jar | $(ACP)
 	@echo "Copy: $(PRIVATE_MODULE) ($@)"
 	$(copy-file-to-new-target)
 	$(hide) chmod 755 $@
